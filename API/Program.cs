@@ -54,7 +54,7 @@ builder.Services.AddHttpContextAccessor();
 string corsPolicyName = "cors";
 builder.Services.AddCors(options => {
     options.AddPolicy(corsPolicyName, policy => {
-        policy.WithOrigins("https://druga-zadaca-nrpw.onrender.com") // Allow only the specified frontend domain
+        policy.WithOrigins() // Allow only the specified frontend domain
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials(); // Enable credentials (cookies, authorization headers)

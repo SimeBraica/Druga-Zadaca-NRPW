@@ -3,12 +3,12 @@ version: "3.8"
 services:
   frontend:
     build:
-      context: .  # Use the root context
+      context: .  # Root directory context for Blazor
       dockerfile: Dockerfile  # Path to the Dockerfile
     ports:
-      - "4200:80"  # Expose the frontend on port 4200
+      - "4200:80"  # Map the frontend container to port 4200
     depends_on:
-      - backend  # Frontend waits for backend to be ready
+      - backend  # Ensure frontend waits for the backend to be ready
     networks:
       - app-network
     environment:
@@ -16,12 +16,12 @@ services:
 
   backend:
     build:
-      context: .  # Use the root context
+      context: .  # Root directory context for API
       dockerfile: Dockerfile  # Path to the Dockerfile
     ports:
-      - "8080:80"  # Expose the backend on port 8080
+      - "8080:80"  # Map backend to port 8080
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development  # Set environment variable for .NET API
+      - ASPNETCORE_ENVIRONMENT=Development
     networks:
       - app-network
     healthcheck:

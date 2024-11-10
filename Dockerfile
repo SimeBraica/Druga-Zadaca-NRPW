@@ -38,3 +38,6 @@ COPY --from=blazor-build /app/UI/dist ./wwwroot
 
 # Expose port 80 for the web app (you can use any port, but 80 is standard)
 EXPOSE 80
+
+# Start the API as the entry point (this will serve both the API and the Blazor UI)
+ENTRYPOINT ["dotnet", "API.dll"]

@@ -16,6 +16,8 @@ WORKDIR /src
 COPY API/API.csproj ./API/
 RUN dotnet restore ./API/API.csproj
 COPY API/ ./API/
+
+# Publish the API to the /out directory
 RUN dotnet publish ./API/API.csproj -c Release -o /out
 
 # Stage 3: Runtime environment for the API

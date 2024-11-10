@@ -54,7 +54,7 @@ builder.Services.AddHttpContextAccessor();
 string cors = "cors";
 builder.Services.AddCors(options => {
     options.AddPolicy(cors, policy => {
-        policy.WithOrigins("https://localhost:7022")
+        policy.WithOrigins("https://druga-zadaca-nrpw.onrender.com")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -69,7 +69,7 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseCors(cors);
 app.UseAuthentication();

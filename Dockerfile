@@ -36,7 +36,8 @@ COPY --from=dotnet-build /out .
 # Copy the published Blazor UI from the blazor-build stage to the wwwroot folder
 COPY --from=blazor-build /app/UI/dist ./wwwroot
 
-# Expose port 80 for the web app
+# Expose port 80 for the web app (you can use any port, but 80 is standard)
 EXPOSE 80
-# Set the entry point to run the .NET API
+
+# Set the entry point to run the .NET API (API.dll should be the entry point for the backend)
 ENTRYPOINT ["dotnet", "API.dll"]

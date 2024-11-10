@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// Configure services
 builder.Services.AddControllers()
     .AddJsonOptions(x =>
         x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
@@ -42,9 +42,6 @@ builder.Services.AddAuthentication(options => {
     };
 });
 
-
-
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -53,27 +50,32 @@ builder.Services.AddScoped<PetController>();
 builder.Services.AddScoped<HttpClient>();
 
 builder.Services.AddHttpContextAccessor();
-string cors = "cors";
+
+string corsPolicyName = "cors";
 builder.Services.AddCors(options => {
-    options.AddPolicy(cors, policy => {
+    options.AddPolicy(corsPolicyName, policy => {
         policy.WithOrigins("https://druga-zadaca-nrpw.onrender.com")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
     });
-}); builder.Services.AddDbContext<NrppwDrugaContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Database_Conn")));
+});
 
+builder.Services.AddDbContext<NrppwDrugaContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Database_Conn")));
 
 var app = builder.Build();
 
+// Configure middleware
 if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseStaticFiles();
 app.UseHttpsRedirection();
-app.UseCors(cors);
+app.UseRouting(); // Added this to ensure routing is set up before authentication and endpoints
+app.UseCors(corsPolicyName);
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -81,4 +83,5 @@ app.UseEndpoints(endpoints => {
     endpoints.MapControllers();
     endpoints.MapFallbackToFile("index.html");
 });
+
 app.Run();

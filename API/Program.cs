@@ -73,7 +73,7 @@ if (app.Environment.IsDevelopment()) {
 }
 
 app.UseStaticFiles();
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseRouting(); // Added this to ensure routing is set up before authentication and endpoints
 app.UseCors(corsPolicyName);
 app.UseAuthentication();

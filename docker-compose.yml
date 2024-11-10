@@ -3,8 +3,8 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: .
-      dockerfile: Dockerfile  # Path to the Dockerfile for Blazor (UI)
+      context: .  # Use the root context
+      dockerfile: Dockerfile  # Path to the Dockerfile
     ports:
       - "4200:80"  # Expose the frontend on port 4200
     depends_on:
@@ -14,8 +14,8 @@ services:
 
   backend:
     build:
-      context: .
-      dockerfile: Dockerfile  # Path to the Dockerfile for .NET API (backend)
+      context: .  # Use the root context
+      dockerfile: Dockerfile  # Path to the Dockerfile
     ports:
       - "8080:80"  # Expose the backend on port 8080
     environment:

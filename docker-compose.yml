@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   frontend:
@@ -9,6 +9,11 @@ services:
       - "4200:80"  # Expose the frontend on port 4200
     depends_on:
       - backend  # Frontend waits for backend to be ready
+    networks:
+      - app-network
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
   backend:
     build:
       context: .  # Use the root context
@@ -16,4 +21,14 @@ services:
     ports:
       - "8080:80"  # Expose the backend on port 8080
     environment:
-      ASPNETCORE_ENVIRONMENT: Development  # Set environment variable for .NET API
+      - ASPNETCORE_ENVIRONMENT=Development  # Set environment variable for .NET API
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 30s
+      retries: 3
+
+networks:
+  app-network:
+    driver: bridge

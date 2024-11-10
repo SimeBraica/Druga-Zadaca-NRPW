@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS blazor-build
 WORKDIR /app
 
 # Copy the Blazor project file and restore dependencies
-COPY UI/*.csproj ./UI/
+COPY UI/UI.csproj ./UI/
 RUN dotnet restore ./UI/UI.csproj
 
 # Copy the rest of the Blazor files
@@ -17,7 +17,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS dotnet-build
 WORKDIR /app
 
 # Copy the .NET Core API project file and restore dependencies
-COPY API/*.csproj ./API/
+COPY API/API.csproj ./API/
 RUN dotnet restore ./API/API.csproj
 
 # Copy the rest of the API files

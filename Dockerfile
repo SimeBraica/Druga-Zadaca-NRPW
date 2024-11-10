@@ -6,33 +6,35 @@ WORKDIR /app
 COPY UI/UI.csproj ./UI/
 RUN dotnet restore ./UI/UI.csproj
 
-# Copy the entire UI directory and publish it to a known directory
+# Copy the rest of the Blazor files
 COPY UI/ ./UI/
-RUN dotnet publish ./UI/UI.csproj -c Release -o /app/publish
 
-# List the files in the output directory to confirm the structure
-RUN ls -R /app/publish  # Debugging output structure
+# Build the Blazor WebAssembly app for production
+RUN dotnet publish ./UI/UI.csproj -c Release -o /app/UI/dist
 
 # Stage 2: Build the .NET Core API
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS api-build
-WORKDIR /src/api
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS dotnet-build
+WORKDIR /app
 
+# Copy the .NET Core API project file and restore dependencies
 COPY API/API.csproj ./API/
 RUN dotnet restore ./API/API.csproj
+
+# Copy the rest of the API files
 COPY API/ ./API/
 
-RUN dotnet publish ./API/API.csproj -c Release -o /src/api/out
-RUN ls -la /src/api/out
+# Publish the .NET Core API
+RUN dotnet publish ./API/API.csproj -c Release -o /out
 
-# Stage 3: Runtime environment
+# Stage 3: Runtime environment (for serving the app)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
-# Copy the API and Blazor UI published output to the final image
-COPY --from=api-build /src/api/out ./  # Copy API output
+# Copy the published .NET Core API from the build stage
+COPY --from=dotnet-build /out .
 
-# Make sure this points to the right location based on the publish structure:
-COPY --from=blazor-build /app/publish/wwwroot /wwwroot  # Copy Blazor UI wwwroot output
+# Copy the published Blazor UI from the blazor-build stage to the wwwroot folder
+COPY --from=blazor-build /app/UI/dist ./wwwroot
 
+# Expose port 80 for the web app (you can use any port, but 80 is standard)
 EXPOSE 80
-ENTRYPOINT ["dotnet", "API.dll"]

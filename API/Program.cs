@@ -17,6 +17,8 @@ builder.Services.AddControllers()
 builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+builder.WebHost.UseUrls("http://*:8080");
+
 builder.Services.AddAuthentication(options => {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -75,6 +77,8 @@ app.UseCors(cors);
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
-
+app.UseEndpoints(endpoints => {
+    endpoints.MapControllers();
+    endpoints.MapFallbackToFile("index.html");
+});
 app.Run();

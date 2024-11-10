@@ -28,6 +28,6 @@ builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<PetService>();
 
 // Configure the HttpClient with the base address
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://druga-zadaca-nrpw.onrender.com/") });
 
 await builder.Build().RunAsync();

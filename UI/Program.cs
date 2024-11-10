@@ -23,11 +23,12 @@ builder.Services
         reCaptchaOptions.SiteKey = "6Lc1-HUqAAAAAOlwH177GLu1BPJN0O05ABebCtHd"; // ReCaptcha SiteKey
     });
 
-// Register scoped services
+// Register scoped services for login and pet-related functionality
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<PetService>();
 
-// Configure the HttpClient with the base address
+// Configure the HttpClient with the base address for the API
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://druga-zadaca-nrpw.onrender.com/") });
 
+// Build and run the application
 await builder.Build().RunAsync();

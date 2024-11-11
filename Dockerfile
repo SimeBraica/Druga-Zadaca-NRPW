@@ -10,7 +10,7 @@ RUN dotnet restore ./UI/UI.csproj
 COPY UI/ ./UI/
 
 # Build the Blazor WebAssembly app for production
-RUN dotnet publish ./UI/UI.csproj -c Release -o /app/UI/dist
+RUN dotnet publish ./UI/UI.csproj -c Release -o /app/UI
 
 # Stage 2: Build the .NET Core API (Backend)
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS dotnet-build
@@ -34,7 +34,7 @@ WORKDIR /app
 COPY --from=dotnet-build /out .
 
 # Copy the published Blazor UI from the blazor-build stage to the wwwroot folder
-COPY --from=blazor-build /app/UI/dist ./wwwroot
+COPY --from=blazor-build /app/UI ./wwwroot
 
 # Expose port 80 for the web app (you can use any port, but 80 is standard)
 EXPOSE 80

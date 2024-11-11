@@ -27,9 +27,8 @@ builder.Services
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<PetService>();
 
-builder.Services.AddSpaStaticFiles(configuration => {
-    configuration.RootPath = "wwwroot"; 
 // Configure the HttpClient with the base address for the API
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://druga-zadaca-nrpw.onrender.com/") });
+
 // Build and run the application
 await builder.Build().RunAsync();
